@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Book Appointment - {{ service.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/book_appointment.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-4">Book {{ service.name }}</h2>
+    <p class="lead">Please enter your details and select a time for your appointment.</p>
+
+    <!-- Display error messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            {{ form.customer_name }}
+            {% if form.customer_name.errors %}
+                <div class="text-danger">{{ form.customer_name.errors.as_text }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            {{ form.customer_email }}
+            {% if form.customer_email.errors %}
+                <div class="text-danger">{{ form.customer_email.errors.as_text }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Address</label>
+            {{ form.customer_address }}
+            {% if form.customer_address.errors %}
+                <div class="text-danger">{{ form.customer_address.errors.as_text }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Date</label>
+            {{ form.date }}
+            {% if form.date.errors %}
+                <div class="text-danger">{{ form.date.errors.as_text }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Start Time</label>
+            {{ form.start_time }}
+            {% if form.start_time.errors %}
+                <div class="text-danger">{{ form.start_time.errors.as_text }}</div>
+            {% endif %}
+        </div>
+
+    
+
+        <div class="mb-3">
+            <label class="form-label">Select Barber</label>
+            {{ form.barber }}
+            {% if form.barber.errors %}
+                <div class="text-danger">{{ form.barber.errors.as_text }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Notes (Optional)</label>
+            {{ form.notes }}
+        </div>
+
+        <div class="mb-3">
+            <strong>Total Amount: KSH {{ service.price }}</strong>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Confirm Appointment</button>
+    </form>
+</div>
+
+{% endblock %}
